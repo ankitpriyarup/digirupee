@@ -7,22 +7,35 @@
     "createNode": "cross-env geth --datadir nodes/node_$npm_config_name/ account new --password nodes/password | grep 'Public address' > info.txt && mv ./info.txt nodes/node_$npm_config_name/info.txt",
     "initNode": "cross-env geth init --datadir nodes/node_$npm_config_name/ nodes/genesis.json",
     "runBootNode": "bootnode -nodekey nodes/boot.key -addr :30305 | head -n 1 > nodes/bootnode",
-    "runNode": "cross-env sh nodes/node_$npm_config_name/run.sh"
+    "runNode": "cross-env sh nodes/node_$npm_config_name/run.sh",
+    "deployContract": "npx hardhat compile && npx hardhat run --network testnet scripts/deploy.ts > deployed-contract-address",
+    "runServer": "npx tsc && node dist/server.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@openzeppelin/contracts": "^4.9.5"
+    "@ngneat/falso": "^7.2.0",
+    "@openzeppelin/contracts": "^4.9.5",
+    "axios": "^1.6.7",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "ethers": "^6.11.1",
+    "express": "^4.18.3",
+    "keccak256": "^1.0.6",
+    "sqlite3": "^5.1.7"
   },
   "devDependencies": {
     "@nomicfoundation/hardhat-toolbox": "^4.0.0",
-    "@typescript-eslint/eslint-plugin": "^7.2.0",
-    "@typescript-eslint/parser": "^7.2.0",
+    "@types/cors": "^2.8.17",
+    "@types/express": "^4.17.21",
+    "@typescript-eslint/eslint-plugin": "^7.1.1",
+    "@typescript-eslint/parser": "^7.1.1",
     "cross-env": "^7.0.3",
     "eslint": "^8.57.0",
     "eslint-config-prettier": "^9.1.0",
-    "hardhat": "^2.22.0",
-    "prettier": "^3.2.5"
+    "hardhat": "^2.21.0",
+    "prettier": "^3.2.5",
+    "typescript": "^5.4.2"
   }
 }

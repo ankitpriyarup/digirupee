@@ -1,26 +1,21 @@
 import { ethers } from "hardhat";
 
+enum ACCOUNTS {
+  OWNER=0,
+  AUTHORITY=1,
+};
+
 async function main() {
-  const currentTimestampInSeconds = Math.round(Date.now() / 1000);
-  const unlockTime = currentTimestampInSeconds + 60;
-
-  const lockedAmount = ethers.parseEther("0.001");
-
-  const lock = await ethers.deployContract("Lock", [unlockTime], {
-    value: lockedAmount,
-  });
-
-  await lock.waitForDeployment();
-
-  console.log(
-    `Lock with ${ethers.formatEther(
-      lockedAmount
-    )}ETH and unlock timestamp ${unlockTime} deployed to ${lock.target}`
-  );
+  const signers = await ethers.getSigners();
+  const owner = signers[ACCOUNTS.OWNER];
+  const authority = signers[ACCOUNTS.AUTHORITY];
+  const contractFactory = await ethers.getContractFactory("DigitalRupee");
+  const contract = await contractFactory.deploy(authority.address, owner.address);
+  await contract.waitForDeployment();
+  const address = await contract.getAddress();
+  console.log(address);
 }
 
-// We recommend this pattern to be able to use async/await everywhere
-// and properly handle errors.
 main().catch((error) => {
   console.error(error);
   process.exitCode = 1;
