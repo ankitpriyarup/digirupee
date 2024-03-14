@@ -1,0 +1,25 @@
+.amount-bg {
+    padding: 10px;
+    border-radius: 10px;
+    margin-left: 10px;
+}
+
+.transaction-card {
+    color: white;
+    position: relative;
+    margin-bottom: 20px;
+    padding: 30px;
+}
+
+.timestamp {
+    position: absolute;
+    bottom: 5px;
+    right: 5px;
+    color: white;
+    font-size: 12px;
+  }
+
+  .amount-container {
+    margin-bottom: 15px;
+  }
+  

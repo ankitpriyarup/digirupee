@@ -1,0 +1,101 @@
+/* Change body and html styles */
+body, html {
+    margin: 0;
+    padding: 0;
+    font-family: 'Trebuchet MS', sans-serif;
+  }
+  
+  /* Update .icon styles */
+  .icon {
+    width: 100px;
+    height: 100px;
+    margin-bottom: 20px; 
+  }
+  
+  /* Update .login-container styles */
+  .login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #1a1a1a; 
+  }
+  
+  /* Update .login-form styles */
+  .login-form {
+    background-color: #333; 
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    width: 300px;
+    text-align: center;
+  }
+  
+  /* Update input[type='tel'] and .pin-input styles */
+  input[type='tel'],
+  .pin-input {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border: none;
+    border-radius: 5px;
+    text-align: center;
+    max-width: 280px;
+  }
+  
+  /* Update .pin-container styles */
+  .pin-container {
+    margin-top: 10px;
+  }
+  
+  /* Update .input-pin and .pin-input styles */
+  .input-pin {
+    display: flex;
+    margin: 10px 0px;
+  }
+  
+  .pin-input {
+    flex: 1;
+    margin: 0 5px;
+  }
+  
+  /* Update .submit-button styles */
+  .submit-button {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border: none;
+    border-radius: 5px;
+    background-color: #18ce4d; 
+    color: white;
+    cursor: pointer;
+  }
+  
+  .back-button, .submit-button:hover {
+    background-color: #02c77f;
+  }
+  
+  /* Update .enter-heading styles */
+  .enter-heading {
+    margin-bottom: 5px; 
+    color: #fff;
+  }
+  
+  /* Add new styles for .back-button */
+  .back-button {
+    background-color: transparent;
+    color: #fff; 
+    border: none;
+    cursor: pointer;
+    font-size: 24px; 
+    padding: 0; 
+    margin-bottom: 15px;
+    position: absolute; 
+    top: 20px; 
+    left: 20px; 
+  }
+
+  .submit-button:disabled {
+    background-color: #ccc; /* Grey color */
+  }
+  
