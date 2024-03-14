@@ -192,7 +192,7 @@ app.post('/burn', async (req, res) => {
         return;
     }
 });
-app.post('/walletDetails', async (req, res) => {
+app.post('/getDetails', async (req, res) => {
     const { vpa, pin } = req.body;
     if (!validateInput([{ value: vpa, type: 'string' }, { value: pin, type: 'string', length: 6 }])) {
         res.status(400).json({ "error": "Invalid params" });
@@ -216,14 +216,14 @@ app.post('/walletDetails', async (req, res) => {
         const aadhaar = rows[0]['aadhaar'];
         const name = rows[0]['name'];
         const publicKey = rows[0]['publicKey'];
+        const flag = rows[0]['flag'];
         try {
             const privateKey = generateWalletPrivateKey(pin, mobile, aadhaar);
             const signer = new ethers_1.ethers.Wallet(privateKey, new ethers_1.ethers.JsonRpcProvider(NETWORK_URL));
             const contract = new ethers_1.ethers.Contract(CONTRACT_ADDRESS, DigitalRupee_json_1.default.abi, signer);
             const balance = (await contract.balanceOf(publicKey)).toString();
-            // TODO ADD STATUS CODES, 0: active, 1: inactive, 2: flagged, 3: blocked ...so on.
             const status = 0;
-            return res.send({ name, mobile, aadhaar, pic, balance });
+            return res.send({ flag, name, mobile, aadhaar, pic, balance });
         }
         catch (err) {
             res.status(400).json({ "error": err });
@@ -231,18 +231,45 @@ app.post('/walletDetails', async (req, res) => {
         }
     });
 });
-app.post('/vpaLinkedWithNumber', async (req, res) => {
-    const { mobile } = req.body;
-    if (!validateInput([{ value: mobile, type: 'string', length: 10 }])) {
+app.post('/detailsLinkedWithNumber', async (req, res) => {
+    const { mobile, pin } = req.body;
+    if (!validateInput([
+        { value: mobile, type: 'string', length: 10 },
+        { value: pin, type: 'string', length: 6 }
+    ])) {
         res.status(400).json({ "error": "Invalid params" });
         return;
     }
-    let foundVpas = [];
+    let foundDetails = [];
     for (const bank of REGISTERED_BANKS) {
-        db.all(`SELECT vpa FROM ${bank}_users WHERE mobile = "${mobile}"`, async (err, rows) => {
-            foundVpas = [...foundVpas, ...(rows?.map((row) => row.vpa) ?? [])];
+        db.all(`SELECT * FROM ${bank}_users WHERE mobile = "${mobile}"`, async (err, rows) => {
+            if (!err && rows.length !== 0) {
+                const pic = rows[0]['pic'];
+                const mobile = rows[0]['mobile'];
+                const aadhaar = rows[0]['aadhaar'];
+                const name = rows[0]['name'];
+                const publicKey = rows[0]['publicKey'];
+                const vpa = rows[0]['vpa'];
+                const flag = rows[0]['flag'];
+                try {
+                    const privateKey = generateWalletPrivateKey(pin, mobile, aadhaar);
+                    const signer = new ethers_1.ethers.Wallet(privateKey, new ethers_1.ethers.JsonRpcProvider(NETWORK_URL));
+                    const contract = new ethers_1.ethers.Contract(CONTRACT_ADDRESS, DigitalRupee_json_1.default.abi, signer);
+                    const balance = (await contract.balanceOf(publicKey)).toString();
+                    if (bank === 'rbi') {
+                        foundDetails.push({ flag, vpa, name, mobile, aadhaar, pic, balance });
+                    }
+                    else {
+                        foundDetails.push({ flag, vpa, name, mobile, aadhaar, pic, balance, accountNumber: rows[0]['accountNumber'], ifscCode: rows[0]['ifscCode'] });
+                    }
+                }
+                catch (err) {
+                    res.status(400).json({ "error": err });
+                    return;
+                }
+            }
             if (bank === REGISTERED_BANKS.slice(-1)[0]) {
-                res.send(foundVpas);
+                res.send(foundDetails);
             }
         });
     }
@@ -325,8 +352,6 @@ app.post('/history', async (req, res) => {
         }
         res.send(rows);
     });
-});
-app.post('validateUser', async (req, res) => {
 });
 app.listen(SERVER_PORT, () => {
     return console.log(`Express is listening at http://localhost:${SERVER_PORT}`);
