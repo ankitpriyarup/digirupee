@@ -4,7 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "createNode": "cross-env geth --datadir nodes/node_$npm_config_name/ account new --password nodes/password | grep 'Public address' > info.txt && mv ./info.txt nodes/node_$npm_config_name/info.txt",
+    "initNode": "cross-env geth init --datadir nodes/node_$npm_config_name/ nodes/genesis.json",
+    "runBootNode": "bootnode -nodekey nodes/boot.key -addr :30305 | head -n 1 > nodes/bootnode",
+    "runNode": "cross-env sh nodes/node_$npm_config_name/run.sh"
   },
   "keywords": [],
   "author": "",
@@ -16,6 +19,7 @@
     "@nomicfoundation/hardhat-toolbox": "^4.0.0",
     "@typescript-eslint/eslint-plugin": "^7.2.0",
     "@typescript-eslint/parser": "^7.2.0",
+    "cross-env": "^7.0.3",
     "eslint": "^8.57.0",
     "eslint-config-prettier": "^9.1.0",
     "hardhat": "^2.22.0",
