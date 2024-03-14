@@ -1,0 +1,67 @@
+http://localhost:5008/registerWallet
+{
+     "name": "Ankit Priyarup",
+     "pin": "123456",
+     "mobile": "9818865785",
+     "aadhaar": "ABC1234567PQ",
+     "profilePicUrl": "https://i.ibb.co/s3chYMm/ankitpriyarup.jpg"
+}
+{
+     "name": "Prachi Goyal",
+     "pin": "987654",
+     "mobile": "9810405419",
+     "aadhaar": "PQR9876543AB",
+     "profilePicUrl": "https://i.ibb.co/p33C6PX/prachigoyal.jpg"
+}
+
+http://localhost:5008/registerBank
+{
+    "bank": "icici",
+    "name": "Ankit Priyarup",
+    "pin": "123456",
+    "mobile": "9818865785",
+    "aadhaar": "ABC1234567PQ",
+    "profilePicUrl": "https://i.ibb.co/s3chYMm/ankitpriyarup.jpg",
+    "accountNumber": "809764231291",
+    "ifscCode": "icic0000842"
+}
+{
+    "bank": "hdfc",
+    "name": "Prachi Goyal",
+    "pin": "987654",
+    "mobile": "9810405419",
+    "aadhaar": "PQR9876543AB",
+    "profilePicUrl": "https://i.ibb.co/p33C6PX/prachigoyal.jpg",
+   "accountNumber": "142837491828",
+   "ifscCode": "hdfc0004210"
+}
+
+http://localhost:5008/walletDetails
+{
+    "vpa": "9818865785@wallet",
+    "pin": "123456"
+}
+{
+    "vpa": "9810405419@wallet",
+    "pin": "987654"
+}
+
+http://localhost:5008/mint
+{
+    "vpa": "9818865785@wallet",
+    "amount": 15000
+}
+
+http://localhost:5008/history
+{
+    "vpa": "9818865785@icici",
+    "pin": "123456"
+}
+
+http://localhost:5008/transfer
+{
+    "vpaFrom": "9818865785@wallet",
+    "pin": "123456",
+    "vpaTo": "9810405419@wallet",
+    "amount": 5000
+}
